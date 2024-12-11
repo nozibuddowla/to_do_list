@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+Todo App
+{% endblock %}
+{% block content %}
+<h1>My Todos</h1>
+<!-- <form>
+    <input type="text" name="query" placeholder="Search your todo here">
+    <button type="submit">Search</button>
+</form> -->
+<form action="">
+    {{ search_form }}
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+    {% for todo in todos %}
+    <li>
+        {{ todo.title }} - {{ todo.completed }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
