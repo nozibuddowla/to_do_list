@@ -1,0 +1,33 @@
+# Python bytecode files
+*.pyc
+__pycache__/
+
+# Virtual environment
+venv/
+
+# Django migrations
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# IDE configuration files
+.vscode/
+.idea/
+
+# Django secret key
+.env
+
+# Other common files
+*.db
+
+# Database files
+*.sqlite3
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Static and media files (if auto-generated)
+static/
+media/
