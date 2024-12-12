@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Task
 from .forms import SearchForm, AddTodoForm
 from .models import Todo
@@ -49,16 +49,22 @@ def todos(request):
 """
 
 def todos(request):
-    if request.method == 'POST':
-        add_todo_form = AddTodoForm(request.POST)
-        if add_todo_form.is_valid():
-            add_todo_form.save()
-
-    add_todo_form = AddTodoForm()
     todos = Todo.objects.all()
+    search_form = SearchForm(request.GET or None)
+    add_todo_form = AddTodoForm(request.POST or None)
+
+    if request.method == 'POST' and add_todo_form.is_valid():
+        add_todo_form.save()
+        return redirect('todos')
+    
+    if search_form.is_valid():
+        search_term = search_form.cleaned_data.get('query')
+        if search_term:
+            todos = todos.filter(title__icontains=search_term)
     
     context = {
         "todos": todos,
-        "add_todo_form": add_todo_form
+        "add_todo_form": add_todo_form,
+        "search_form": search_form,
     }
     return render(request, 'cool_todo/todos.html', context=context)
