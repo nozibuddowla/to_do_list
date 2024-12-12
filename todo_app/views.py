@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Task
-from .forms import SearchForm
+from .forms import SearchForm, AddTodoForm
+from .models import Todo
 
 # Create your views here.
 def task_list(request):
@@ -15,7 +16,7 @@ def task_list(request):
 def task_details(request, pk):
     task = Task.objects.get(pk=pk)
     return render(request, 'task_detail.html', {'task': task})
-
+"""
 def todos(request):
     todos = [
         {"title": "Buy groceries", "completed": False},
@@ -26,14 +27,17 @@ def todos(request):
         {"title": "Study for exam", "completed": False}
     ]
 
-    search_form = SearchForm()
+    search_form = SearchForm(request.POST)
 
-    data = request.GET
-    search_term = data.get('query', '')
+    search_term = ""
+
+    if search_form.is_valid():
+        search_term = search_form.cleaned_data.get('query')
 
     searched_todo = []
+
     for todo in todos:
-        if search_term.lower() in todo.get('title').lower():
+        if search_term and search_term.lower() in todo.get('title').lower():
             searched_todo.append(todo)
 
     context = {
@@ -41,4 +45,20 @@ def todos(request):
         "search_form": search_form
     }
 
+    return render(request, 'cool_todo/todos.html', context=context)
+"""
+
+def todos(request):
+    if request.method == 'POST':
+        add_todo_form = AddTodoForm(request.POST)
+        if add_todo_form.is_valid():
+            add_todo_form.save()
+
+    add_todo_form = AddTodoForm()
+    todos = Todo.objects.all()
+    
+    context = {
+        "todos": todos,
+        "add_todo_form": add_todo_form
+    }
     return render(request, 'cool_todo/todos.html', context=context)

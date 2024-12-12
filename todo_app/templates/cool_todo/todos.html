@@ -4,15 +4,13 @@ Todo App
 {% endblock %}
 {% block content %}
 <h1>My Todos</h1>
-<!-- <form>
-    <input type="text" name="query" placeholder="Search your todo here">
-    <button type="submit">Search</button>
-</form> -->
-<form action="">
-    {{ search_form }}
-    <button type="submit">Search</button>
-</form>
+<form method="post">
+    {% csrf_token %}
 
+    {{ add_todo_form }}
+
+    <button type="submit">Add Todo</button>
+</form>
 <ul>
     {% for todo in todos %}
     <li>
